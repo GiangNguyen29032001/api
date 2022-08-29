@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,25 +15,24 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/test', function () {
+Route::get('/test', function () {
     $request = request()->all();
-    // if ($request['password'] === '111') {
-    //     return [
-    //         'message' => 'Thành công',
-    //         'status' => 200
-    //     ];
-    // } else {
-    //     return [
-    //         'message' => 'Thất bại',
-    //         'status' => 401
-    //     ];
-    // }
+    $result = DB::table('user')->where(['email' => $request['email']])->first();
+    dd($result);
+    if (!empty($result)) {
+    }
 });
 Route::post('/dangnhap', function () {
     $request = request()->all();
-    if ($request['password'] === '111') {
+    $result = DB::table('user')->where([
+        'username' => $request['name'],
+        'password' => $request['password']
+    ])->first();
+
+    if (!empty($result)) {
         return [
             'request' => $request,
+            'result' => $result,
             'message' => 'Thành công',
             'status' => '200'
         ];
@@ -46,17 +46,34 @@ Route::post('/dangnhap', function () {
 });
 Route::post('/dangky', function () {
     $request = request()->all();
-    if ($request['name'] === 'nguyen giang') {
+    /**
+     * 
+     * Tao user
+     * tim user co username chua ton tai thi insert user
+     * neu tim username da ton tai thi thong user da ton tai
+     */
+    $result = DB::table('user')->where([
+        'username' => $request['name'],
+    ])->first();
+
+    if (!empty($result)) {
         return [
             'request' => $request,
-            'message' => 'Thành công',
-            'status' => '200'
+            'result' => $result,
+            'message' => 'user da ton tai',
+            'status' => '401'
         ];
     } else {
+        DB::table('user')->insert([
+            'username' => $request['name'],
+            'email' => $request['email'],
+            'password' => $request['password']
+        ]);
         return [
             'request' => $request,
-            'message' => 'Thất bại',
-            'status' => '401'
+            'result' => $result,
+            'message' => 'Them thanh cong',
+            'status' => '200'
         ];
     }
 });

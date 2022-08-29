@@ -34,13 +34,13 @@ Route::post('/dangnhap', function () {
             'request' => $request,
             'result' => $result,
             'message' => 'Thành công',
-            'status' => '200'
+            'status' => 200
         ];
     } else {
         return [
             'request' => $request,
             'message' => 'Thất bại',
-            'status' => '401'
+            'status' => 401
         ];
     }
 });
@@ -77,3 +77,4 @@ Route::post('/dangky', function () {
         ];
     }
 });
+/* tao use comment

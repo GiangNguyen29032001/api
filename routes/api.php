@@ -61,7 +61,7 @@ Route::post('/dangky', function () {
             'request' => $request,
             'result' => $result,
             'message' => 'user da ton tai',
-            'status' => '401'
+            'status' => 401
         ];
     } else {
         DB::table('user')->insert([
@@ -73,8 +73,71 @@ Route::post('/dangky', function () {
             'request' => $request,
             'result' => $result,
             'message' => 'Them thanh cong',
-            'status' => '200'
+            'status' => 200
         ];
     }
 });
-/* tao use comment
+
+// dang bai
+Route::post('/baiviet1', function () {
+    $request = request()->all();
+
+    // Hàm này dùng để insert mới dưới liệu
+    DB::table('baiviet')->insert([
+        'noidung' => $request['noidung'],
+        'tieude' => $request['tieude'],
+        'ngaythang' => date('Y-m-d H:s:i') // php có hàm date() dung de lay ngay hien tai hoac format lai ngay thang nam
+    ]);
+    return [
+        'request' => $request,
+        'message' => 'Them thanh cong',
+        'status' => 200
+    ];
+});
+
+
+// lay danh sach bai viet
+Route::get('/danhsachbaiviet', function () {
+    $result = DB::table('baiviet')->select('*')->orderBy('id_baiviet', 'desc')->get();
+    return [
+        'result' => $result,
+        'message' => 'Lấy danh sách thanh cong',
+        'status' => 200
+    ];
+});
+//taobinhluanmoi
+Route::post('/thembinhluan', function () {
+    $request = request()->all();
+
+    // Hàm này dùng để insert mới dưới liệu
+    DB::table('binhluan')->insert([
+        'noidungbinhuan' => $request['thembinhluan'],
+        'ngaythang' => date('Y-m-d H:s:i')
+    ]);
+    return [
+        'request' => $request,
+        'message' => 'Them thanh cong',
+        'status' => 200
+    ];
+});
+
+
+//in binh luan ra
+Route::get('/danhsachbinhluan', function () {
+    $result = DB::table('binhluan')->select('*')->orderBy('id_binhluan', 'desc')->get();
+    return [
+        'result' => $result,
+        'message' => 'comment thanh cong',
+        'status' => 200
+    ];
+});
+//xoa bai viet
+Route::delete('/xoabinhluan', function () {
+    $request = request()->all();
+    $result = DB::table('binhluan')->where(['id_binhluan' => $request['id_binhluan'],])->delete();
+    return [
+        'result' => $result,
+        'message' => 'xoa thanh cong',
+        'status' => 200
+    ];
+});

@@ -132,7 +132,7 @@ Route::get('/danhsachbinhluan', function () {
     ];
 });
 //xoa bai viet
-Route::delete('/xoabinhluan', function () {
+Route::post('/xoabinhluan', function () {
     $request = request()->all();
     $result = DB::table('binhluan')->where(['id_binhluan' => $request['id_binhluan'],])->delete();
     return [
